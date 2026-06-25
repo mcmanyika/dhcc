@@ -21,8 +21,11 @@ import {
   BUSINESS_CATEGORIES,
   MEMBER_STATUSES,
   MEMBERSHIP_TIERS,
+  PAYMENT_STATUSES,
   type Member,
   type MemberStatus,
+  type MembershipTier,
+  type PaymentStatus,
 } from "@/types";
 
 export default function AdminMembersPage() {
@@ -54,32 +57,56 @@ export default function AdminMembersPage() {
     return () => clearTimeout(timer);
   }, [fetchMembers]);
 
-  const updateStatus = async (id: string, status: MemberStatus) => {
+  const patchMember = async (
+    id: string,
+    updates: Partial<Member>
+  ): Promise<boolean> => {
     const token = await getIdToken();
-    await fetch(`/api/members/${id}`, {
+    const res = await fetch(`/api/members/${id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status }),
+      body: JSON.stringify(updates),
     });
-    fetchMembers();
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error ?? "Failed to update member");
+      return false;
+    }
+    return true;
+  };
+
+  const updateStatus = async (id: string, status: MemberStatus) => {
+    const ok = await patchMember(id, { status });
+    if (ok) fetchMembers();
+  };
+
+  const updateTier = async (id: string, membershipTier: MembershipTier) => {
+    const ok = await patchMember(id, { membershipTier });
+    if (ok) fetchMembers();
   };
 
   const saveMember = async () => {
     if (!editMember) return;
-    const token = await getIdToken();
-    await fetch(`/api/members/${editMember.id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(editMember),
+    const ok = await patchMember(editMember.id, {
+      firstName: editMember.firstName,
+      lastName: editMember.lastName,
+      businessName: editMember.businessName,
+      email: editMember.email,
+      phone: editMember.phone,
+      businessCategory: editMember.businessCategory,
+      membershipTier: editMember.membershipTier,
+      status: editMember.status,
+      paymentStatus: editMember.paymentStatus,
+      businessDescription: editMember.businessDescription,
+      isAdmin: editMember.isAdmin,
     });
-    setEditMember(null);
-    fetchMembers();
+    if (ok) {
+      setEditMember(null);
+      fetchMembers();
+    }
   };
 
   const deleteMember = async () => {
@@ -169,6 +196,7 @@ export default function AdminMembersPage() {
                 <TableHeader>Tier</TableHeader>
                 <TableHeader>Status</TableHeader>
                 <TableHeader>Payment</TableHeader>
+                <TableHeader>Access</TableHeader>
                 <TableHeader>Actions</TableHeader>
               </TableRow>
             </TableHead>
@@ -182,12 +210,40 @@ export default function AdminMembersPage() {
                     <div className="text-xs text-gray-500">{member.email}</div>
                   </TableCell>
                   <TableCell>{member.businessName}</TableCell>
-                  <TableCell className="capitalize">{member.membershipTier}</TableCell>
+                  <TableCell>
+                    <select
+                      value={member.membershipTier}
+                      onChange={(e) =>
+                        updateTier(
+                          member.id,
+                          e.target.value as MembershipTier
+                        )
+                      }
+                      className="rounded border border-gray-300 bg-white px-2 py-1 text-sm capitalize dark:border-slate-600 dark:bg-slate-900"
+                    >
+                      {MEMBERSHIP_TIERS.map((t) => (
+                        <option key={t.value} value={t.value}>
+                          {t.label}
+                        </option>
+                      ))}
+                    </select>
+                  </TableCell>
                   <TableCell>
                     <StatusBadge status={member.status} />
                   </TableCell>
                   <TableCell>
                     <StatusBadge status={member.paymentStatus} />
+                  </TableCell>
+                  <TableCell>
+                    {member.isAdmin ? (
+                      <span className="inline-flex rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-800 dark:bg-teal-900/40 dark:text-teal-200">
+                        Admin
+                      </span>
+                    ) : (
+                      <span className="text-xs text-gray-500 dark:text-slate-400">
+                        Member
+                      </span>
+                    )}
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-wrap gap-1">
@@ -249,7 +305,7 @@ export default function AdminMembersPage() {
               ))}
               {members.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} className="py-8 text-center text-gray-500">
+                  <TableCell colSpan={7} className="py-8 text-center text-gray-500">
                     No members found.
                   </TableCell>
                 </TableRow>
@@ -312,34 +368,86 @@ export default function AdminMembersPage() {
               }
               options={BUSINESS_CATEGORIES.map((c) => ({ value: c, label: c }))}
             />
-            <Select
-              label="Tier"
-              value={editMember.membershipTier}
-              onChange={(e) =>
-                setEditMember({
-                  ...editMember,
-                  membershipTier: e.target.value as Member["membershipTier"],
-                })
-              }
-              options={MEMBERSHIP_TIERS.map((t) => ({
-                value: t.value,
-                label: t.label,
-              }))}
-            />
-            <Select
-              label="Status"
-              value={editMember.status}
-              onChange={(e) =>
-                setEditMember({
-                  ...editMember,
-                  status: e.target.value as MemberStatus,
-                })
-              }
-              options={MEMBER_STATUSES.map((s) => ({
-                value: s,
-                label: s.charAt(0).toUpperCase() + s.slice(1),
-              }))}
-            />
+
+            <div className="rounded-lg border border-gray-200 p-4 dark:border-slate-700">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-slate-100">
+                Access level
+              </h3>
+              <p className="mt-1 text-xs text-gray-500 dark:text-slate-400">
+                Change membership tier, account status, payment state, or grant
+                admin access.
+              </p>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                <Select
+                  label="Membership tier"
+                  value={editMember.membershipTier}
+                  onChange={(e) =>
+                    setEditMember({
+                      ...editMember,
+                      membershipTier: e.target.value as Member["membershipTier"],
+                    })
+                  }
+                  options={MEMBERSHIP_TIERS.map((t) => ({
+                    value: t.value,
+                    label: `${t.label} (${t.price}/yr)`,
+                  }))}
+                />
+                <Select
+                  label="Account status"
+                  value={editMember.status}
+                  onChange={(e) =>
+                    setEditMember({
+                      ...editMember,
+                      status: e.target.value as MemberStatus,
+                    })
+                  }
+                  options={MEMBER_STATUSES.map((s) => ({
+                    value: s,
+                    label: s.charAt(0).toUpperCase() + s.slice(1),
+                  }))}
+                />
+                <Select
+                  label="Payment status"
+                  value={editMember.paymentStatus}
+                  onChange={(e) =>
+                    setEditMember({
+                      ...editMember,
+                      paymentStatus: e.target.value as PaymentStatus,
+                    })
+                  }
+                  options={PAYMENT_STATUSES.map((s) => ({
+                    value: s,
+                    label: s
+                      .split("_")
+                      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                      .join(" "),
+                  }))}
+                />
+                <div className="flex flex-col justify-end">
+                  <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700 dark:text-slate-300">
+                    <input
+                      type="checkbox"
+                      checked={editMember.isAdmin === true}
+                      onChange={(e) =>
+                        setEditMember({
+                          ...editMember,
+                          isAdmin: e.target.checked,
+                        })
+                      }
+                      disabled={!editMember.userId}
+                      className="h-4 w-4 rounded border-gray-300 text-teal-700 focus:ring-teal-500"
+                    />
+                    Grant admin access
+                  </label>
+                  {!editMember.userId && (
+                    <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
+                      Member must sign in before admin access can be granted.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
             <Textarea
               label="Description"
               rows={3}

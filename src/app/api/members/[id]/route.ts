@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase/admin";
 import { verifyAdminToken } from "@/lib/admin-auth";
+import {
+  pickAdminMemberUpdates,
+  syncMemberAdminRole,
+  withAdminFlag,
+  getAdminUserIds,
+} from "@/lib/admin-member-update";
+import type { Member } from "@/types";
 
 export async function GET(
   request: NextRequest,
@@ -21,7 +28,10 @@ export async function GET(
     return NextResponse.json({ error: "Member not found" }, { status: 404 });
   }
 
-  return NextResponse.json({ id: doc.id, ...doc.data() });
+  const adminUserIds = await getAdminUserIds(db);
+  return NextResponse.json(
+    withAdminFlag({ id: doc.id, ...doc.data() } as Member, adminUserIds)
+  );
 }
 
 export async function PATCH(
@@ -37,6 +47,15 @@ export async function PATCH(
 
   const { id } = await params;
   const body = await request.json();
+  const updates = pickAdminMemberUpdates(body);
+
+  if (Object.keys(updates).length === 0) {
+    return NextResponse.json(
+      { error: "No valid fields to update" },
+      { status: 400 }
+    );
+  }
+
   const db = await getAdminDb();
   const docRef = db.collection("members").doc(id);
   const doc = await docRef.get();
@@ -45,15 +64,41 @@ export async function PATCH(
     return NextResponse.json({ error: "Member not found" }, { status: 404 });
   }
 
-  const updates = {
-    ...body,
-    updatedAt: new Date().toISOString(),
-  };
+  const memberData = doc.data()!;
+  const email =
+    (typeof updates.email === "string" ? updates.email : undefined) ||
+    (memberData.email as string);
 
-  await docRef.update(updates);
+  if (updates.isAdmin !== undefined) {
+    if (updates.isAdmin === false && memberData.userId === admin.uid) {
+      return NextResponse.json(
+        { error: "You cannot remove your own admin access" },
+        { status: 400 }
+      );
+    }
+
+    const result = await syncMemberAdminRole(
+      db,
+      memberData.userId as string | undefined,
+      email,
+      updates.isAdmin
+    );
+
+    if (result.error) {
+      return NextResponse.json({ error: result.error }, { status: 400 });
+    }
+  }
+
+  await docRef.update({
+    ...updates,
+    updatedAt: new Date().toISOString(),
+  });
 
   const updated = await docRef.get();
-  return NextResponse.json({ id: updated.id, ...updated.data() });
+  const adminUserIds = await getAdminUserIds(db);
+  return NextResponse.json(
+    withAdminFlag({ id: updated.id, ...updated.data() } as Member, adminUserIds)
+  );
 }
 
 export async function DELETE(
@@ -74,6 +119,11 @@ export async function DELETE(
 
   if (!doc.exists) {
     return NextResponse.json({ error: "Member not found" }, { status: 404 });
+  }
+
+  const userId = doc.data()?.userId as string | undefined;
+  if (userId && userId !== admin.uid) {
+    await db.collection("admins").doc(userId).delete();
   }
 
   await docRef.delete();

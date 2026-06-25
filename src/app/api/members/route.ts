@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase/admin";
 import { verifyAuthToken } from "@/lib/auth";
 import { verifyAdminToken } from "@/lib/admin-auth";
+import { getAdminUserIds, withAdminFlag } from "@/lib/admin-member-update";
 import type { Member, MemberInput } from "@/types";
 
 export async function GET(request: NextRequest) {
@@ -17,12 +18,20 @@ export async function GET(request: NextRequest) {
   const search = searchParams.get("search")?.toLowerCase();
 
   const db = await getAdminDb();
-  const snapshot = await db.collection("members").orderBy("createdAt", "desc").get();
+  const [snapshot, adminUserIds] = await Promise.all([
+    db.collection("members").orderBy("createdAt", "desc").get(),
+    getAdminUserIds(db),
+  ]);
 
-  let members: Member[] = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Member[];
+  let members: Member[] = snapshot.docs.map((doc) =>
+    withAdminFlag(
+      {
+        id: doc.id,
+        ...doc.data(),
+      } as Member,
+      adminUserIds
+    )
+  );
 
   if (status) {
     members = members.filter((m) => m.status === status);

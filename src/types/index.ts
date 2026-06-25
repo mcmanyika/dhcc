@@ -191,3 +191,11 @@ export const MEMBER_STATUSES: MemberStatus[] = [
   "active",
   "expired",
 ];
+
+export const PAYMENT_STATUSES: PaymentStatus[] = [
+  "unpaid",
+  "paid",
+  "subscription_active",
+  "subscription_cancelled",
+  "failed",
+];

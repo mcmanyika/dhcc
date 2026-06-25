@@ -24,6 +24,7 @@ import { RegisteredEventsList } from "@/components/events/RegisteredEventsList";
 import { EditBusinessProfileForm } from "@/components/member/EditBusinessProfileForm";
 import { MembershipPaymentButton } from "@/components/member/MembershipPaymentButton";
 import { PaymentHistory } from "@/components/member/PaymentHistory";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import {
   canStartMembershipCheckout,
   needsMembershipPayment,
@@ -411,6 +412,8 @@ export function MemberDashboardView({
           }}
         />
       </Modal>
+
+      <ChatWidget mode="member" />
     </div>
   );
 }

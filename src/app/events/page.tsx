@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { RegisteredEventsList } from "@/components/events/RegisteredEventsList";
 import { useMyRegistrations } from "@/hooks/useMyRegistrations";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
 import type { Event } from "@/types";
 
@@ -118,6 +119,7 @@ export default function EventsPage() {
           })}
         </div>
       )}
+      <ChatWidget mode={user ? "member" : "public"} />
     </div>
   );
 }

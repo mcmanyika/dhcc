@@ -10,6 +10,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/Ca
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { hasMemberDashboardAccess } from "@/lib/member-access";
 import type { Member } from "@/types";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 
 export function ApplyPageContent() {
   const { user, loading, fetchMemberProfile } = useAuth();
@@ -106,6 +107,7 @@ export function ApplyPageContent() {
           Create an account
         </Link>
       </p>
+      <ChatWidget mode="member" />
     </div>
   );
 }

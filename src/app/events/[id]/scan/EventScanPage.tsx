@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Calendar, CheckCircle, MapPin, UserCheck } from "lucide-react";
+import { Calendar, CheckCircle, CreditCard, MapPin, UserCheck } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -11,6 +11,7 @@ import { formatCurrency, formatDateTime } from "@/lib/utils";
 import { isEventDay, isEventPast } from "@/lib/event-qr";
 import { useMemberPrefill } from "@/hooks/useMemberPrefill";
 import { useAuth } from "@/components/providers/AuthProvider";
+import { submitEventRegistration } from "@/lib/event-registration-client";
 import type { Event } from "@/types";
 
 type ScanMode = "register" | "checkin";
@@ -114,6 +115,7 @@ export default function EventScanPage() {
         : "register";
 
   const past = isEventPast(event.date);
+  const isPaid = event.price > 0;
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,24 +123,15 @@ export default function EventScanPage() {
     setSubmitting(true);
 
     try {
-      const token = await getIdToken();
-      const headers: HeadersInit = { "Content-Type": "application/json" };
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
+      const result = await submitEventRegistration(
+        id,
+        isPaid,
+        registerForm,
+        getIdToken
+      );
+      if (result.type === "registered") {
+        setSuccess("registered");
       }
-
-      const res = await fetch(`/api/events/${id}/register`, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(registerForm),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error ?? "Registration failed");
-      }
-
-      setSuccess("registered");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
     } finally {
@@ -305,7 +298,9 @@ export default function EventScanPage() {
           <CardHeader>
             <CardTitle>Register Your Attendance</CardTitle>
             <CardDescription>
-              Let us know you&apos;re coming to this event.
+              {isPaid
+                ? "Complete payment via Stripe to reserve your spot."
+                : "Let us know you're coming to this event."}
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleRegister} className="space-y-4">
@@ -349,7 +344,14 @@ export default function EventScanPage() {
               className={isLoggedIn ? "bg-gray-50" : undefined}
             />
             <Button type="submit" loading={submitting} className="w-full">
-              Register
+              {isPaid ? (
+                <span className="inline-flex items-center gap-2">
+                  <CreditCard className="h-4 w-4" />
+                  Pay {formatCurrency(event.price)} & Register
+                </span>
+              ) : (
+                "Register"
+              )}
             </Button>
           </form>
         </Card>

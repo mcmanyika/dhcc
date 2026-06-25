@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase/admin";
 import { applyMembershipPayment } from "@/lib/complete-membership-payment";
+import { applyEventRegistrationPayment } from "@/lib/complete-event-payment";
 import { getStripe } from "@/lib/stripe";
 import Stripe from "stripe";
 
@@ -31,6 +32,12 @@ export async function POST(request: NextRequest) {
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
+
+      if (session.metadata?.paymentKind === "event") {
+        await applyEventRegistrationPayment(db, session);
+        break;
+      }
+
       const memberId = session.metadata?.memberId;
       if (!memberId) break;
 

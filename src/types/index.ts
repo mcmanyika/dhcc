@@ -106,6 +106,9 @@ export interface EventRegistration {
   status: AttendanceStatus;
   registeredAt: string;
   checkedInAt?: string;
+  paymentStatus?: "free" | "paid";
+  stripeSessionId?: string;
+  amountPaid?: number;
 }
 
 export interface UserEventRegistration {
@@ -139,7 +142,9 @@ export interface FeedbackInput {
 
 export interface PaymentRecord {
   id: string;
-  memberId: string;
+  memberId?: string;
+  eventId?: string;
+  registrationId?: string;
   stripeSessionId: string;
   amount: number;
   currency: string;

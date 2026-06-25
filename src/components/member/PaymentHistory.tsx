@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import type { PaymentRecord } from "@/types";
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 2;
 
 interface PaymentHistoryProps {
   payments: PaymentRecord[];
@@ -16,6 +16,7 @@ interface PaymentHistoryProps {
 function formatPaymentType(type: string) {
   if (type === "subscription") return "Subscription";
   if (type === "payment") return "One-time";
+  if (type === "event") return "Event";
   return type.replace(/_/g, " ");
 }
 

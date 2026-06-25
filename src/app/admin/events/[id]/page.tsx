@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/Table";
-import { formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import type { Event, EventRegistration, AttendanceStatus } from "@/types";
 
 export default function AdminEventDetailPage() {
@@ -103,6 +103,7 @@ export default function AdminEventDetailPage() {
               <TableHeader>Email</TableHeader>
               <TableHeader>Phone</TableHeader>
               <TableHeader>Status</TableHeader>
+              <TableHeader>Payment</TableHeader>
               <TableHeader>Registered</TableHeader>
               <TableHeader>Checked In</TableHeader>
               <TableHeader>Actions</TableHeader>
@@ -116,6 +117,13 @@ export default function AdminEventDetailPage() {
                 <TableCell>{reg.phone || "—"}</TableCell>
                 <TableCell>
                   <StatusBadge status={reg.status} />
+                </TableCell>
+                <TableCell>
+                  {reg.paymentStatus === "paid"
+                    ? reg.amountPaid != null
+                      ? formatCurrency(reg.amountPaid)
+                      : "Paid"
+                    : "Free"}
                 </TableCell>
                 <TableCell>
                   {new Date(reg.registeredAt).toLocaleDateString()}
@@ -143,7 +151,7 @@ export default function AdminEventDetailPage() {
             ))}
             {registrations.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="py-8 text-center text-gray-500">
+                  <TableCell colSpan={8} className="py-8 text-center text-gray-500">
                   No registrations yet.
                 </TableCell>
               </TableRow>

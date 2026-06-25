@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase/admin";
 import { verifyAdminToken } from "@/lib/admin-auth";
 import { verifyAuthToken } from "@/lib/auth";
-import {
-  findRegistrationForEvent,
-  normalizeEmail,
-} from "@/lib/event-registrations";
+import { validateEventRegistration } from "@/lib/event-registration-checkout";
+import { normalizeEmail } from "@/lib/event-registrations";
 import type { EventRegistration } from "@/types";
 
 export async function GET(
@@ -53,32 +51,33 @@ export async function POST(
   }
 
   const db = await getAdminDb();
-  const eventDoc = await db.collection("events").doc(eventId).get();
-
-  if (!eventDoc.exists) {
-    return NextResponse.json({ error: "Event not found" }, { status: 404 });
-  }
-
-  const event = eventDoc.data()!;
   const emailLower = normalizeEmail(email);
 
-  const existing = await findRegistrationForEvent(db, eventId, emailLower);
-  if (existing) {
+  const validation = await validateEventRegistration(db, eventId, emailLower);
+  if (!validation.ok) {
+    if (validation.error === "You are already registered for this event") {
+      return NextResponse.json(
+        { error: validation.error, alreadyRegistered: true },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
-      { ...existing, alreadyRegistered: true },
-      { status: 200 }
+      { error: validation.error },
+      { status: validation.status }
     );
   }
 
-  const registrationsSnapshot = await db
-    .collection("events")
-    .doc(eventId)
-    .collection("registrations")
-    .where("status", "!=", "cancelled")
-    .get();
+  const event = validation.event;
+  const price = (event.price as number) ?? 0;
 
-  if (registrationsSnapshot.size >= event.capacity) {
-    return NextResponse.json({ error: "Event is at full capacity" }, { status: 400 });
+  if (price > 0) {
+    return NextResponse.json(
+      {
+        error: "This event requires online payment.",
+        requiresPayment: true,
+      },
+      { status: 402 }
+    );
   }
 
   const auth = await verifyAuthToken(request.headers.get("authorization"));
@@ -90,6 +89,7 @@ export async function POST(
     ...(auth?.uid ? { userId: auth.uid } : {}),
     status: "registered" as const,
     registeredAt: new Date().toISOString(),
+    paymentStatus: "free" as const,
   };
 
   const docRef = await db

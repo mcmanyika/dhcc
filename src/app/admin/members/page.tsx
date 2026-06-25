@@ -152,7 +152,7 @@ export default function AdminMembersPage() {
     <div>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Members</h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-slate-100">Members</h1>
           <p className="mt-1 text-gray-500">Manage membership applications and members.</p>
         </div>
         <Button onClick={exportCsv} variant="outline">
@@ -161,7 +161,7 @@ export default function AdminMembersPage() {
         </Button>
       </div>
 
-      <div className="mt-6 flex flex-col gap-4 sm:flex-row">
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         <Input
           placeholder="Search by name, business, or email..."
           value={search}
@@ -183,11 +183,11 @@ export default function AdminMembersPage() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12">
+        <div className="flex justify-center py-8">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-700 border-t-transparent" />
         </div>
       ) : (
-        <div className="mt-6">
+        <div className="mt-4">
           <Table>
             <TableHead>
               <TableRow>
@@ -305,7 +305,7 @@ export default function AdminMembersPage() {
               ))}
               {members.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={7} className="py-8 text-center text-gray-500">
+                  <TableCell colSpan={7} className="py-6 text-center text-gray-500">
                     No members found.
                   </TableCell>
                 </TableRow>
@@ -322,7 +322,7 @@ export default function AdminMembersPage() {
         size="lg"
       >
         {editMember && (
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="grid gap-4 sm:grid-cols-2">
               <Input
                 label="First Name"

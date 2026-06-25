@@ -120,10 +120,10 @@ export default function EventDetailPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-5">
       <Card className="mb-8">
         <CardHeader>
-          <CardTitle className="text-2xl">{event.title}</CardTitle>
+          <CardTitle className="text-xl">{event.title}</CardTitle>
           <CardDescription className="text-base">{event.description}</CardDescription>
           <div className="mt-4 space-y-2 text-sm text-gray-600">
             <div className="flex items-center gap-2">

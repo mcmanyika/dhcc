@@ -48,12 +48,12 @@ export default function AdminFeedbackPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Feedback Analytics</h1>
+      <h1 className="text-xl font-bold text-gray-900 dark:text-slate-100">Feedback Analytics</h1>
       <p className="mt-1 text-gray-500">
         Review event feedback and identify improvement areas.
       </p>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
         <StatsCard
           title="Total Responses"
           value={feedback.length}
@@ -73,11 +73,11 @@ export default function AdminFeedbackPage() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12">
+        <div className="flex justify-center py-8">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-700 border-t-transparent" />
         </div>
       ) : feedback.length === 0 ? (
-        <Card className="mt-6 text-center">
+        <Card className="mt-4 text-center">
           <CardHeader>
             <CardTitle>No Feedback Yet</CardTitle>
             <CardDescription>
@@ -87,7 +87,7 @@ export default function AdminFeedbackPage() {
           </CardHeader>
         </Card>
       ) : (
-        <div className="mt-6">
+        <div className="mt-4">
           <Table>
             <TableHead>
               <TableRow>

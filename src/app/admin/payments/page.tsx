@@ -168,8 +168,8 @@ export default function AdminPaymentsPage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">
+      <div className="mb-4">
+        <h1 className="text-xl font-bold text-gray-900 dark:text-slate-100">
           Payments
         </h1>
         <p className="mt-1 text-gray-500 dark:text-slate-400">
@@ -177,7 +177,7 @@ export default function AdminPaymentsPage() {
         </p>
       </div>
 
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <StatsCard
           title="Total Revenue"
           value={formatCurrency(totalRevenue)}
@@ -211,7 +211,7 @@ export default function AdminPaymentsPage() {
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-700 border-t-transparent" />
         </div>
       ) : filtered.length === 0 ? (
-        <p className="py-12 text-center text-gray-500 dark:text-slate-400">
+        <p className="py-8 text-center text-gray-500 dark:text-slate-400">
           No payments found.
         </p>
       ) : (

@@ -23,7 +23,7 @@ export function RegisteredEventsList({
       {registrations.map(({ event, registration }) => (
         <div
           key={registration.id}
-          className="group flex flex-col gap-3 rounded-xl border border-gray-100 border-l-4 border-l-teal-600 bg-gray-50/50 p-4 transition-shadow hover:shadow-md sm:flex-row sm:items-center sm:justify-between dark:border-slate-700 dark:border-l-teal-500 dark:bg-slate-900/40"
+          className="group flex flex-col gap-2 rounded-lg border border-gray-100 border-l-4 border-l-teal-600 bg-gray-50/50 p-3 transition-shadow hover:shadow-md sm:flex-row sm:items-center sm:justify-between dark:border-slate-700 dark:border-l-teal-500 dark:bg-slate-900/40"
         >
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">

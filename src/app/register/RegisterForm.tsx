@@ -52,7 +52,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="flex min-h-[60vh] items-center justify-center px-4 py-12">
+    <div className="flex min-h-[60vh] items-center justify-center px-4 py-6">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Create Account</CardTitle>

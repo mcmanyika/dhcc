@@ -67,7 +67,7 @@ export default function AdminEventsPage() {
     <div>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Events</h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-slate-100">Events</h1>
           <p className="mt-1 text-gray-500">Create and manage chamber events.</p>
         </div>
         <Button onClick={() => setShowCreate(true)}>
@@ -77,18 +77,18 @@ export default function AdminEventsPage() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12">
+        <div className="flex justify-center py-8">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-700 border-t-transparent" />
         </div>
       ) : events.length === 0 ? (
-        <Card className="mt-6 text-center">
+        <Card className="mt-4 text-center">
           <CardHeader>
             <CardTitle>No Events Yet</CardTitle>
             <CardDescription>Create your first event to get started.</CardDescription>
           </CardHeader>
         </Card>
       ) : (
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {events.map((event) => (
             <Card key={event.id}>
               <CardHeader>

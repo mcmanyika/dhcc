@@ -93,7 +93,7 @@ export function EditBusinessProfileForm({
         <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</div>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         <Input
           id="edit-firstName"
           label="First Name"
@@ -118,7 +118,7 @@ export function EditBusinessProfileForm({
         onChange={(e) => updateField("businessName", e.target.value)}
       />
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         <Input
           id="edit-email"
           label="Email"

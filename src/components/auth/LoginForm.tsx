@@ -63,7 +63,7 @@ export function LoginForm() {
   };
 
   return (
-    <div className="relative flex min-h-[calc(100vh-0px)] flex-col items-center justify-center bg-gradient-to-br from-teal-800 to-teal-700 px-4 py-12 dark:from-slate-950 dark:to-slate-900">
+    <div className="relative flex min-h-[calc(100vh-0px)] flex-col items-center justify-center bg-gradient-to-br from-teal-800 to-teal-700 px-4 py-8 dark:from-slate-950 dark:to-slate-900">
       <div className="absolute right-4 top-4">
         <ThemeToggle variant="on-dark" />
       </div>

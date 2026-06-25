@@ -8,7 +8,6 @@ import {
   CheckCircle,
   CreditCard,
   Globe,
-  LayoutDashboard,
   LogOut,
   Mail,
   Pencil,
@@ -69,17 +68,17 @@ function StatCard({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-white/60 bg-white/80 p-5 shadow-sm backdrop-blur-sm dark:border-slate-700/60 dark:bg-slate-800/80",
+        "rounded-xl border border-white/60 bg-white/80 p-4 shadow-sm backdrop-blur-sm dark:border-slate-700/60 dark:bg-slate-800/80",
         className
       )}
     >
-      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-950/50 dark:text-teal-400">
-        <Icon className="h-5 w-5" />
+      <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-950/50 dark:text-teal-400">
+        <Icon className="h-4 w-4" />
       </div>
       <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-slate-400">
         {label}
       </p>
-      <p className="mt-1 text-xl font-bold text-gray-900 dark:text-slate-100">{value}</p>
+      <p className="mt-0.5 text-lg font-bold text-gray-900 dark:text-slate-100">{value}</p>
       {sub && (
         <p className="mt-0.5 text-sm text-gray-500 dark:text-slate-400">{sub}</p>
       )}
@@ -97,8 +96,8 @@ function ProfileRow({
   children: ReactNode;
 }) {
   return (
-    <div className="flex gap-3 rounded-xl p-3 transition-colors hover:bg-gray-50/80 dark:hover:bg-slate-700/30">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-500 dark:bg-slate-700 dark:text-slate-400">
+    <div className="flex gap-2 rounded-lg p-2 transition-colors hover:bg-gray-50/80 dark:hover:bg-slate-700/30">
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-500 dark:bg-slate-700 dark:text-slate-400">
         <Icon className="h-4 w-4" />
       </div>
       <div className="min-w-0 flex-1">
@@ -135,9 +134,9 @@ export function MemberDashboardView({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-teal-50/50 via-background to-background dark:from-slate-900 dark:via-background dark:to-background">
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 py-4 sm:px-5">
         {paymentSuccess && (
-          <div className="mb-6 flex items-start gap-3 rounded-2xl border border-green-200/80 bg-green-50/90 p-4 shadow-sm backdrop-blur dark:border-green-800/50 dark:bg-green-950/40">
+          <div className="mb-4 flex items-start gap-2 rounded-xl border border-green-200/80 bg-green-50/90 p-3 shadow-sm backdrop-blur dark:border-green-800/50 dark:bg-green-950/40">
             <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-green-600 dark:text-green-400" />
             <div>
               <p className="font-semibold text-green-800 dark:text-green-300">
@@ -151,7 +150,7 @@ export function MemberDashboardView({
         )}
 
         {showPaymentCta && canPay && (
-          <div className="mb-6 rounded-2xl border border-amber-200/80 bg-amber-50/90 p-5 shadow-sm dark:border-amber-800/50 dark:bg-amber-950/30">
+          <div className="mb-4 rounded-xl border border-amber-200/80 bg-amber-50/90 p-4 shadow-sm dark:border-amber-800/50 dark:bg-amber-950/30">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="font-semibold text-amber-900 dark:text-amber-200">
@@ -169,7 +168,7 @@ export function MemberDashboardView({
         )}
 
         {/* Hero */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-700 via-teal-800 to-emerald-900 px-6 py-8 text-white shadow-xl sm:px-8 sm:py-10">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-700 via-teal-800 to-emerald-900 px-4 py-5 text-white shadow-lg sm:px-5 sm:py-6">
           <div
             className="pointer-events-none absolute inset-0 opacity-20"
             style={{
@@ -178,9 +177,9 @@ export function MemberDashboardView({
               backgroundSize: "48px 48px",
             }}
           />
-          <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-5">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-2xl font-bold ring-2 ring-white/25 backdrop-blur-sm">
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-xl font-bold ring-2 ring-white/25 backdrop-blur-sm">
                 {getInitials(member.firstName, member.lastName)}
               </div>
               <div>
@@ -188,11 +187,11 @@ export function MemberDashboardView({
                   <Sparkles className="h-4 w-4" />
                   Member Dashboard
                 </p>
-                <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
+                <h1 className="mt-0.5 text-xl font-bold tracking-tight sm:text-2xl">
                   Welcome back, {member.firstName}
                 </h1>
                 <p className="mt-1 text-teal-100/90">{member.businessName}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-2 flex flex-wrap gap-1.5">
                   <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold capitalize backdrop-blur-sm">
                     {member.status}
                   </span>
@@ -203,17 +202,6 @@ export function MemberDashboardView({
               </div>
             </div>
             <div className="flex flex-wrap gap-2 sm:justify-end">
-              {member.isAdmin && (
-                <Link href="/admin">
-                  <Button
-                    variant="outline"
-                    className="border-white/30 bg-white/10 text-white hover:bg-white/20"
-                  >
-                    <LayoutDashboard className="h-4 w-4" />
-                    Admin
-                  </Button>
-                </Link>
-              )}
               <Link href="/events">
                 <Button
                   variant="outline"
@@ -236,7 +224,7 @@ export function MemberDashboardView({
         </div>
 
         {/* Stats */}
-        <div className="relative z-10 -mt-6 grid gap-4 sm:grid-cols-3">
+        <div className="relative z-10 -mt-4 grid gap-3 sm:grid-cols-3">
           <StatCard
             icon={Sparkles}
             label="Membership"
@@ -264,9 +252,9 @@ export function MemberDashboardView({
         </div>
 
         {/* Main grid */}
-        <div className="mt-8 grid gap-6 lg:grid-cols-5">
+        <div className="mt-5 grid gap-4 lg:grid-cols-5">
           {/* Profile — 3 cols */}
-          <section className="rounded-2xl border border-gray-200/80 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/90 lg:col-span-3">
+          <section className="rounded-xl border border-gray-200/80 bg-white/90 p-4 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/90 lg:col-span-3">
             <div className="mb-5 flex items-start justify-between gap-3">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100">
@@ -315,7 +303,7 @@ export function MemberDashboardView({
           </section>
 
           {/* Membership — 2 cols */}
-          <section className="rounded-2xl border border-gray-200/80 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/90 lg:col-span-2">
+          <section className="rounded-xl border border-gray-200/80 bg-white/90 p-4 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/90 lg:col-span-2">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100">
               Membership
             </h2>
@@ -355,8 +343,8 @@ export function MemberDashboardView({
         </div>
 
         {/* Events */}
-        <section className="mt-6 rounded-2xl border border-gray-200/80 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/90">
-          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <section className="mt-4 rounded-xl border border-gray-200/80 bg-white/90 p-4 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/90">
+          <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100">
                 My Events
@@ -373,7 +361,7 @@ export function MemberDashboardView({
             </Link>
           </div>
           {registrationsLoading ? (
-            <div className="flex justify-center py-10">
+            <div className="flex justify-center py-6">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-700 border-t-transparent" />
             </div>
           ) : (
@@ -382,8 +370,8 @@ export function MemberDashboardView({
         </section>
 
         {/* Payments */}
-        <section className="mt-6 rounded-2xl border border-gray-200/80 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/90">
-          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <section className="mt-4 rounded-xl border border-gray-200/80 bg-white/90 p-4 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/90">
+          <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100">
                 Payment History

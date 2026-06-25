@@ -67,7 +67,7 @@ export function FeedbackForm({ eventId, eventTitle }: FeedbackFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
         <div className="rounded-lg bg-red-50 p-4 text-sm text-red-700">{error}</div>
       )}

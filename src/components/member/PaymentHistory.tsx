@@ -61,7 +61,7 @@ export function PaymentHistory({ payments, loading }: PaymentHistoryProps) {
         {paginatedPayments.map((payment) => (
           <div
             key={payment.id}
-            className="flex flex-col gap-2 rounded-xl border border-gray-100 bg-gray-50/50 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-700 dark:bg-slate-900/40"
+            className="flex flex-col gap-2 rounded-lg border border-gray-100 bg-gray-50/50 p-3 sm:flex-row sm:items-center sm:justify-between dark:border-slate-700 dark:bg-slate-900/40"
           >
             <div>
               <p className="font-medium text-gray-900 dark:text-slate-100">

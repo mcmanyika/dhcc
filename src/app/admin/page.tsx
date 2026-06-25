@@ -56,7 +56,7 @@ export default function AdminDashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center py-20">
+      <div className="flex justify-center py-12">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-700 border-t-transparent" />
       </div>
     );
@@ -64,7 +64,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Dashboard</h1>
+      <h1 className="text-xl font-bold text-gray-900 dark:text-slate-100">Dashboard</h1>
       <p className="mt-1 text-gray-500">
         Overview of membership, events, and revenue.
       </p>
@@ -75,7 +75,7 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <StatsCard
           title="Total Members"
           value={analytics?.totalMembers ?? 0}

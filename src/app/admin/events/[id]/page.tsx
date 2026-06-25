@@ -83,7 +83,7 @@ export default function AdminEventDetailPage() {
         Back to Events
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">{event?.title}</h1>
+      <h1 className="text-xl font-bold text-gray-900 dark:text-slate-100">{event?.title}</h1>
       <p className="mt-1 text-gray-500">
         {event && formatDate(event.date)} · {registrations.length} registrations
       </p>
@@ -95,7 +95,7 @@ export default function AdminEventDetailPage() {
         </Button>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-4">
         <Table>
           <TableHead>
             <TableRow>

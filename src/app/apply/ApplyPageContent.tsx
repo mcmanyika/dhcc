@@ -42,7 +42,7 @@ export function ApplyPageContent() {
 
   if (member?.status === "pending") {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-2xl px-4 py-6 sm:px-5">
         <Card className="text-center">
           <CardHeader>
             <Clock className="mx-auto mb-4 h-12 w-12 text-amber-500" />
@@ -63,7 +63,7 @@ export function ApplyPageContent() {
 
   if (member?.status === "rejected") {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-3xl px-4 py-6 sm:px-5">
         <Card className="mb-8 text-center">
           <CardHeader>
             <XCircle className="mx-auto mb-4 h-12 w-12 text-red-500" />
@@ -82,7 +82,7 @@ export function ApplyPageContent() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-5">
       <Card className="mb-8">
         <CardHeader>
           <CardTitle>Membership Application</CardTitle>

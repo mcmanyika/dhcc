@@ -38,7 +38,7 @@ export function TableHeader({
   return (
     <th
       className={cn(
-        "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400",
+        "px-3 py-2 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400",
         className
       )}
       {...props}
@@ -57,7 +57,7 @@ export function TableCell({
   return (
     <td
       colSpan={colSpan}
-      className={cn("px-4 py-3 text-gray-700 dark:text-slate-300", className)}
+      className={cn("px-3 py-2 text-gray-700 dark:text-slate-300", className)}
       {...props}
     >
       {children}

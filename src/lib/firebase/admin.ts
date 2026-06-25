@@ -5,22 +5,45 @@ import type { Firestore } from "firebase-admin/firestore";
 
 let adminApp: App | undefined;
 
-function loadServiceAccount() {
+type ServiceAccountJson = {
+  project_id: string;
+  client_email: string;
+  private_key: string;
+};
+
+function parseServiceAccountJson(raw: string): ServiceAccountJson {
+  const parsed = JSON.parse(raw) as ServiceAccountJson;
+  if (parsed.private_key?.includes("\\n")) {
+    parsed.private_key = parsed.private_key.replace(/\\n/g, "\n");
+  }
+  return parsed;
+}
+
+function loadServiceAccount(): ServiceAccountJson {
+  const inlineJson =
+    process.env.FIREBASE_SERVICE_ACCOUNT_JSON ||
+    process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
+
+  if (inlineJson?.trim().startsWith("{")) {
+    return parseServiceAccountJson(inlineJson);
+  }
+
   const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
   if (credentialsPath) {
+    // On Vercel, users often paste the full JSON into GOOGLE_APPLICATION_CREDENTIALS.
+    if (credentialsPath.trim().startsWith("{")) {
+      return parseServiceAccountJson(credentialsPath);
+    }
     const json = readFileSync(credentialsPath, "utf8");
-    return JSON.parse(json) as {
-      project_id: string;
-      client_email: string;
-      private_key: string;
-    };
+    return parseServiceAccountJson(json);
   }
 
   return {
-    project_id: process.env.FIREBASE_ADMIN_PROJECT_ID,
-    client_email: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-    private_key: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+    project_id: process.env.FIREBASE_ADMIN_PROJECT_ID ?? "",
+    client_email: process.env.FIREBASE_ADMIN_CLIENT_EMAIL ?? "",
+    private_key:
+      process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n") ?? "",
   };
 }
 
@@ -50,7 +73,7 @@ async function getAdminApp(): Promise<App> {
 
   if (isPlaceholderCredentials(serviceAccount)) {
     throw new Error(
-      "Firebase Admin credentials are not configured. Set FIREBASE_ADMIN_* in .env.local or GOOGLE_APPLICATION_CREDENTIALS to your service account JSON file."
+      "Firebase Admin credentials are not configured. Locally: set GOOGLE_APPLICATION_CREDENTIALS to a file path or FIREBASE_ADMIN_* vars. On Vercel: set FIREBASE_SERVICE_ACCOUNT_JSON to the full service account JSON (or paste JSON into GOOGLE_APPLICATION_CREDENTIALS)."
     );
   }
 

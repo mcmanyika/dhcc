@@ -159,6 +159,11 @@ export interface AdminPaymentRecord extends PaymentRecord {
   businessName?: string;
 }
 
+export interface ChartDataPoint {
+  label: string;
+  value: number;
+}
+
 export interface AnalyticsSummary {
   totalMembers: number;
   pendingApplications: number;
@@ -168,6 +173,8 @@ export interface AnalyticsSummary {
   eventRegistrations: number;
   averageFeedbackRating: number;
   stripeRevenue: number;
+  membersByStatus: ChartDataPoint[];
+  revenueByCategory: ChartDataPoint[];
 }
 
 export const MEMBERSHIP_TIERS: { value: MembershipTier; label: string; price: number }[] = [

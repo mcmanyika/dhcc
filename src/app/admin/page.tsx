@@ -5,13 +5,17 @@ import {
   Calendar,
   Clock,
   DollarSign,
-  MessageSquare,
   Star,
   UserCheck,
   Users,
   UserX,
 } from "lucide-react";
 import { StatsCard } from "@/components/ui/StatsCard";
+import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
+import {
+  DoughnutChart,
+  HorizontalBarChart,
+} from "@/components/admin/AnalyticsCharts";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { formatCurrency } from "@/lib/utils";
 import type { AnalyticsSummary } from "@/types";
@@ -117,6 +121,30 @@ export default function AdminDashboardPage() {
           value={formatCurrency(analytics?.stripeRevenue ?? 0)}
           icon={DollarSign}
         />
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+        <Card className="flex h-full flex-col">
+          <CardHeader>
+            <CardTitle>Members by Status</CardTitle>
+          </CardHeader>
+          <HorizontalBarChart
+            className="flex flex-1 flex-col justify-center"
+            data={analytics?.membersByStatus ?? []}
+          />
+        </Card>
+
+        <Card className="flex h-full flex-col">
+          <CardHeader>
+            <CardTitle>Revenue by Category</CardTitle>
+          </CardHeader>
+          <DoughnutChart
+            className="flex-1"
+            data={analytics?.revenueByCategory ?? []}
+            formatValue={(v) => formatCurrency(v)}
+            emptyMessage="No revenue recorded yet."
+          />
+        </Card>
       </div>
     </div>
   );

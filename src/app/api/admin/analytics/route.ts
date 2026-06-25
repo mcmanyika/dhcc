@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase/admin";
 import { verifyAdminToken } from "@/lib/admin-auth";
+import {
+  buildMembersByStatusChart,
+  buildRevenueByCategoryChart,
+} from "@/lib/admin-analytics";
 import type { AnalyticsSummary } from "@/types";
 
 export async function GET(request: NextRequest) {
@@ -24,6 +28,14 @@ export async function GET(request: NextRequest) {
 
     const members = membersSnap.docs.map((d) => d.data());
     const feedback = feedbackSnap.docs.map((d) => d.data());
+    const payments = paymentsSnap.docs.map((d) => {
+      const data = d.data();
+      return {
+        amount: data.amount as number | undefined,
+        paymentType: data.paymentType as string | undefined,
+        stripeSessionId: (data.stripeSessionId as string | undefined) ?? d.id,
+      };
+    });
 
     let totalRegistrations = 0;
     for (const eventDoc of eventsSnap.docs) {
@@ -37,8 +49,8 @@ export async function GET(request: NextRequest) {
           feedback.length
         : 0;
 
-    const stripeRevenue = paymentsSnap.docs.reduce(
-      (sum, d) => sum + (d.data().amount ?? 0),
+    const stripeRevenue = payments.reduce(
+      (sum, p) => sum + (p.amount ?? 0),
       0
     );
 
@@ -51,6 +63,8 @@ export async function GET(request: NextRequest) {
       eventRegistrations: totalRegistrations,
       averageFeedbackRating: Math.round(avgRating * 10) / 10,
       stripeRevenue: stripeRevenue / 100,
+      membersByStatus: buildMembersByStatusChart(members),
+      revenueByCategory: buildRevenueByCategoryChart(payments),
     };
 
     return NextResponse.json(summary);

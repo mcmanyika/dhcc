@@ -1,4 +1,8 @@
 import { getAdminDb } from "@/lib/firebase/admin";
+import {
+  buildMembersByStatusChart,
+  buildRevenueByCategoryChart,
+} from "@/lib/admin-analytics";
 import { needsMembershipPayment } from "@/lib/membership-payment";
 import type { AnalyticsSummary, Event, EventFeedback, Member } from "@/types";
 
@@ -27,8 +31,17 @@ export async function getAnalyticsSummaryForChat(): Promise<AnalyticsSummary> {
       ? feedback.reduce((sum, f) => sum + (f.rating ?? 0), 0) / feedback.length
       : 0;
 
-  const stripeRevenue = paymentsSnap.docs.reduce(
-    (sum, d) => sum + (d.data().amount ?? 0),
+  const payments = paymentsSnap.docs.map((d) => {
+    const data = d.data();
+    return {
+      amount: data.amount as number | undefined,
+      paymentType: data.paymentType as string | undefined,
+      stripeSessionId: (data.stripeSessionId as string | undefined) ?? d.id,
+    };
+  });
+
+  const stripeRevenue = payments.reduce(
+    (sum, p) => sum + (p.amount ?? 0),
     0
   );
 
@@ -41,6 +54,8 @@ export async function getAnalyticsSummaryForChat(): Promise<AnalyticsSummary> {
     eventRegistrations: totalRegistrations,
     averageFeedbackRating: Math.round(avgRating * 10) / 10,
     stripeRevenue: stripeRevenue / 100,
+    membersByStatus: buildMembersByStatusChart(members),
+    revenueByCategory: buildRevenueByCategoryChart(payments),
   };
 }
 

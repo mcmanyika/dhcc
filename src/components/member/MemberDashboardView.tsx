@@ -72,7 +72,7 @@ function StatCard({
         className
       )}
     >
-      <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-950/50 dark:text-teal-400">
+      <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 text-gray-500 dark:bg-slate-700 dark:text-slate-400">
         <Icon className="h-4 w-4" />
       </div>
       <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-slate-400">

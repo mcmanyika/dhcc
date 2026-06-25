@@ -127,11 +127,11 @@ export default function EventDetailPage() {
           <CardDescription className="text-base">{event.description}</CardDescription>
           <div className="mt-4 space-y-2 text-sm text-gray-600">
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-teal-700" />
+              <Calendar className="h-4 w-4 text-gray-500 dark:text-slate-400" />
               {formatDateTime(event.date, event.time)}
             </div>
             <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-teal-700" />
+              <MapPin className="h-4 w-4 text-gray-500 dark:text-slate-400" />
               {event.location}
             </div>
             <p className="font-semibold text-teal-700">

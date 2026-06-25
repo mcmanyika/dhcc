@@ -26,7 +26,7 @@ export function DashboardViewToggle({
   const activeAdmin =
     variant === "hero"
       ? "bg-white/20 text-white ring-1 ring-white/30"
-      : "bg-teal-700 text-white shadow-sm";
+      : "bg-gray-200 text-gray-900 shadow-sm dark:bg-slate-700 dark:text-slate-100";
 
   const inactiveAdmin =
     variant === "hero"
@@ -36,7 +36,7 @@ export function DashboardViewToggle({
   const activeMember =
     variant === "hero"
       ? "bg-white/20 text-white ring-1 ring-white/30"
-      : "bg-teal-700 text-white shadow-sm";
+      : "bg-gray-200 text-gray-900 shadow-sm dark:bg-slate-700 dark:text-slate-100";
 
   const inactiveMember = inactiveAdmin;
 

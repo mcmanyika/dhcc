@@ -37,8 +37,9 @@ export function Header() {
   const logoHref = user ? "/dashboard" : "/";
 
   return (
-    <header className="border-b border-gray-200 bg-white dark:border-slate-700 dark:bg-slate-900">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-5">
+    <>
+      <header className="fixed top-0 right-0 left-0 z-50 border-b border-gray-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+        <div className="mx-auto flex h-11 max-w-7xl items-center justify-between px-4 sm:px-5">
         <Link href={logoHref} className="flex items-center gap-2">
           <div className="rounded-md bg-teal-700 p-1.5">
             <Leaf className="h-4 w-4 text-white" />
@@ -69,7 +70,7 @@ export function Header() {
           ))}
           {!loading && (
             <>
-              {hasDashboard ? (
+              {hasDashboard && !isUserAdmin && (
                 <Link
                   href="/dashboard"
                   className={cn(
@@ -81,7 +82,8 @@ export function Header() {
                 >
                   Dashboard
                 </Link>
-              ) : user ? (
+              )}
+              {user && !hasDashboard && (
                 <Link
                   href="/apply"
                   className={cn(
@@ -93,7 +95,8 @@ export function Header() {
                 >
                   Membership
                 </Link>
-              ) : (
+              )}
+              {!user && (
                 <>
                   <Link
                     href="/"
@@ -115,7 +118,9 @@ export function Header() {
             </>
           )}
         </nav>
-      </div>
-    </header>
+        </div>
+      </header>
+      <div className="h-11 shrink-0" aria-hidden />
+    </>
   );
 }

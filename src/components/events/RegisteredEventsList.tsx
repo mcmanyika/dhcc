@@ -32,11 +32,11 @@ export function RegisteredEventsList({
             </div>
             <div className="mt-2 space-y-1 text-sm text-gray-600 dark:text-slate-400">
               <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 shrink-0 text-teal-700" />
+                <Calendar className="h-4 w-4 shrink-0 text-gray-500 dark:text-slate-400" />
                 {formatDateTime(event.date, event.time)}
               </div>
               <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 shrink-0 text-teal-700" />
+                <MapPin className="h-4 w-4 shrink-0 text-gray-500 dark:text-slate-400" />
                 {event.location}
               </div>
             </div>

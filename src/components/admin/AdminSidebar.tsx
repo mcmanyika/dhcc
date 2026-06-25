@@ -14,7 +14,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { Button } from "@/components/ui/Button";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: BarChart3 },
@@ -31,8 +30,8 @@ export function AdminSidebar() {
   return (
     <aside className="flex h-full w-56 shrink-0 flex-col border-r border-gray-200 bg-white dark:border-slate-700 dark:bg-slate-900">
       <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-slate-700">
-        <div className="rounded-md bg-teal-700 p-1.5">
-          <Leaf className="h-4 w-4 text-white" />
+        <div className="rounded-md bg-gray-100 p-1.5 dark:bg-slate-800">
+          <Leaf className="h-4 w-4 text-gray-600 dark:text-slate-400" />
         </div>
         <div>
           <p className="font-bold text-gray-900 dark:text-slate-100">DHCC Admin</p>
@@ -52,7 +51,7 @@ export function AdminSidebar() {
               className={cn(
                 "flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-teal-50 text-teal-700 dark:bg-teal-950/50 dark:text-teal-400"
+                  ? "bg-gray-100 text-gray-900 dark:bg-slate-800 dark:text-slate-100"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100"
               )}
             >
@@ -63,9 +62,6 @@ export function AdminSidebar() {
         })}
       </nav>
       <div className="border-t border-gray-200 p-3 dark:border-slate-700">
-        <div className="mb-2 flex justify-center">
-          <ThemeToggle />
-        </div>
         <Button
           variant="ghost"
           className="w-full justify-start"

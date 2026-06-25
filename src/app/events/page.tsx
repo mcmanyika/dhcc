@@ -87,15 +87,15 @@ export default function EventsPage() {
                   </CardDescription>
                   <div className="mt-4 space-y-2 text-sm text-gray-600 dark:text-slate-400">
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-teal-700" />
+                      <Calendar className="h-4 w-4 text-gray-500 dark:text-slate-400" />
                       {formatDateTime(event.date, event.time)}
                     </div>
                     <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-teal-700" />
+                      <MapPin className="h-4 w-4 text-gray-500 dark:text-slate-400" />
                       {event.location}
                     </div>
                     <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-teal-700" />
+                      <Users className="h-4 w-4 text-gray-500 dark:text-slate-400" />
                       Capacity: {event.capacity}
                     </div>
                     <p className="font-semibold text-teal-700">

@@ -193,11 +193,11 @@ export default function EventScanPage() {
           <CardTitle className="text-xl">{event.title}</CardTitle>
           <div className="mt-3 space-y-1.5 text-sm text-gray-600">
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-teal-700" />
+              <Calendar className="h-4 w-4 text-gray-500 dark:text-slate-400" />
               {formatDateTime(event.date, event.time)}
             </div>
             <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-teal-700" />
+              <MapPin className="h-4 w-4 text-gray-500 dark:text-slate-400" />
               {event.location}
             </div>
             <p className="font-medium text-teal-700">
@@ -243,7 +243,7 @@ export default function EventScanPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <UserCheck className="h-5 w-5 text-teal-700" />
+              <UserCheck className="h-5 w-5 text-gray-500 dark:text-slate-400" />
               <CardTitle>Check In</CardTitle>
             </div>
             <CardDescription>

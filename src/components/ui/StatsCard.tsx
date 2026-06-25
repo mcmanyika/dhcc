@@ -31,8 +31,8 @@ export function StatsCard({
             <p className="mt-1 text-xs text-gray-400 dark:text-slate-500">{description}</p>
           )}
         </div>
-        <div className="rounded-md bg-teal-50 p-2 dark:bg-teal-950/50">
-          <Icon className="h-5 w-5 text-teal-700" />
+        <div className="rounded-md bg-gray-100 p-2 dark:bg-slate-700">
+          <Icon className="h-5 w-5 text-gray-500 dark:text-slate-400" />
         </div>
       </div>
     </div>
